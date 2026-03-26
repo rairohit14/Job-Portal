@@ -29,7 +29,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def home(request):
-    return HttpResponse("Hello User")
+    return HttpResponse('dashboard.html')
 # Create your views here.
 def register(request):
     if request.method == 'POST':
@@ -97,7 +97,7 @@ def job_list(request):
 
     for job in jobs:
         job.already_applied = Apply.objects.filter(user=request.user, job=job).exists
-        
+
     return render(request, 'job_list.html', {'jobs': jobs})
 
 # Apply job feature
