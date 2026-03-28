@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .forms import UserRegisterForm
 
 # user login
-from django.contrib.auth import authenticate, login
+
 from django.shortcuts import render, redirect
 
 # user logout
@@ -29,7 +29,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def home(request):
-    return HttpResponse('dashboard.html')
+    return redirect('/login/')
 # Create your views here.
 def register(request):
     if request.method == 'POST':
@@ -48,10 +48,10 @@ def register(request):
 
 def user_login(request):
     if request.method == 'POST':
+        from django.contrib.auth import authenticate, login
+
         username = request.POST.get('username')
         password = request.POST.get('password')
-
-        print(username, password)
 
         user = authenticate(request, username=username, password=password)
 
@@ -96,7 +96,7 @@ def job_list(request):
     jobs = Job.objects.all()
 
     for job in jobs:
-        job.already_applied = Apply.objects.filter(user=request.user, job=job).exists
+        job.already_applied = Apply.objects.filter(user=request.user, job=job).exists()
 
     return render(request, 'job_list.html', {'jobs': jobs})
 
